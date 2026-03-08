@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -91,6 +92,7 @@ class UserReposFragment : Fragment() {
                         is State.Error -> {
                             Log.d("Error", state.message)
                             binding.loader.isVisible = false
+                            Toast.makeText(requireContext(), "There was an error: ${state.message}", Toast.LENGTH_LONG).show()
                         }
                     }
                 }

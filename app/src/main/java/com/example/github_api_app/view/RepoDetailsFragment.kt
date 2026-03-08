@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -73,7 +74,7 @@ class RepoDetailsFragment : Fragment() {
                     binding.tvOwnerName.text = state.data.name
                     Glide.with(this@RepoDetailsFragment)
                         .load(state.data.avatarUrl)
-                        .error(R.drawable.icon_arrow_forward)
+                        .error(R.drawable.icon_user)
                         .circleCrop()
                         .into(binding.ivOwnerAvatar)
                 }
@@ -112,6 +113,7 @@ class RepoDetailsFragment : Fragment() {
                 }
                 is State.Error -> {
                     Log.d("Error", state.message)
+                    Toast.makeText(requireContext(), "There was an error: ${state.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
