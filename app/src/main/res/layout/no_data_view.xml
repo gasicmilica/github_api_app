@@ -28,7 +28,7 @@
         android:ellipsize="end"
         android:maxLines="3"
         tools:text="No data found"
-        android:textSize="14sp"
+        style="@style/TextStyle.Secondary"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
