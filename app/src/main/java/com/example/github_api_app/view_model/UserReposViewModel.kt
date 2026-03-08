@@ -10,8 +10,11 @@ import com.example.github_api_app.data.repository.UserRepository
 import com.example.github_api_app.model.UserRepoUi
 import com.example.github_api_app.model.UserUi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class UserReposViewModel(
@@ -22,7 +25,7 @@ class UserReposViewModel(
     private val _userState = MutableStateFlow<State<UserUi>>(State.Loading)
     val userState: StateFlow<State<UserUi>> = _userState.asStateFlow()
 
-    fun loadUserInfo(userName: String) {
+    private fun loadUserInfo(userName: String) {
         viewModelScope.launch {
             _userState.value = State.Loading
             val result = userRepository.getUserInfo(userName)
@@ -37,7 +40,7 @@ class UserReposViewModel(
     private val _userReposState = MutableStateFlow<State<List<UserRepoUi>>>(State.Loading)
     val userReposState: StateFlow<State<List<UserRepoUi>>> = _userReposState.asStateFlow()
 
-    fun loadUserRepos(userName: String) {
+    private fun loadUserRepos(userName: String) {
         viewModelScope.launch {
             _userReposState.value = State.Loading
             val result = githubRepoRepository.getUserRepos(userName)
@@ -49,4 +52,12 @@ class UserReposViewModel(
         }
     }
 
+    val isAnythingLoading = combine(userState, userReposState) { user, repos ->
+        user is State.Loading || repos is State.Loading
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
+    fun loadUserNameAndRepos(userName: String) {
+        loadUserInfo(userName)
+        loadUserRepos(userName)
+    }
 }

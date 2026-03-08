@@ -57,50 +57,51 @@ class UserReposFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userReposViewModel.userState.collect { state ->
-                    when(state) {
-                        is State.Loading -> {
-                            binding.loader.isVisible = true
-                        }
-                        is State.Success -> {
-                            binding.tvUserName.text = state.data.name
-                            binding.loader.isVisible = false
-                        }
-                        is State.Error -> {
-                            Log.d("Error", state.message)
-                            binding.loader.isVisible = false
-                        }
+                launch { observeUserInfo() }
+                launch { observeRepos() }
+
+                launch {
+                    userReposViewModel.isAnythingLoading.collect { isLoading ->
+                        binding.loader.isVisible = isLoading
                     }
                 }
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userReposViewModel.userReposState.collect { state ->
-                    when(state) {
-                        is State.Loading -> {
-                            binding.loader.isVisible = true
-                        }
-                        is State.Success -> {
-                            binding.noDataView.root.isVisible = state.data.isEmpty()
-                            binding.noDataView.tvNoContent.text = getString(R.string.no_repos_found)
-                            binding.rvRepos.isVisible = state.data.isNotEmpty()
-                            reposAdapter.setItems(state.data)
-                            binding.loader.isVisible = false
-                        }
-                        is State.Error -> {
-                            Log.d("Error", state.message)
-                            binding.loader.isVisible = false
-                            Toast.makeText(requireContext(), "There was an error: ${state.message}", Toast.LENGTH_LONG).show()
-                        }
-                    }
+        userReposViewModel.loadUserNameAndRepos(Constants.TEST_USER_NAME)
+    }
+
+    private suspend fun observeUserInfo() {
+        userReposViewModel.userState.collect { state ->
+            when(state) {
+                is State.Loading -> {}
+                is State.Success -> {
+                    binding.tvUserName.text = state.data.name
+                }
+                is State.Error -> {
+                    Log.d("Error", state.message)
+                    Toast.makeText(requireContext(), "There was an error: ${state.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
+    }
 
-        userReposViewModel.loadUserInfo(Constants.TEST_USER_NAME)
-        userReposViewModel.loadUserRepos(Constants.TEST_USER_NAME)
+    private suspend fun observeRepos() {
+        userReposViewModel.userReposState.collect { state ->
+            when(state) {
+                is State.Loading -> {}
+                is State.Success -> {
+                    binding.noDataView.root.isVisible = state.data.isEmpty()
+                    binding.noDataView.tvNoContent.text = getString(R.string.no_repos_found)
+                    binding.rvRepos.isVisible = state.data.isNotEmpty()
+                    reposAdapter.setItems(state.data)
+                }
+                is State.Error -> {
+                    Log.d("Error", state.message)
+                    Toast.makeText(requireContext(), "There was an error: ${state.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
