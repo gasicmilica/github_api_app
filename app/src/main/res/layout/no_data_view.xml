@@ -27,7 +27,7 @@
         android:layout_marginHorizontal="12dp"
         android:ellipsize="end"
         android:maxLines="3"
-        android:text="No data found"
+        tools:text="No data found"
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

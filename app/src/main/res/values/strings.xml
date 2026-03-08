@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">github_api_app</string>
+
+    <string name="no_tags_found">No tags found for this repo</string>
+    <string name="no_repos_found">No repos found for this user</string>
+    <string name="watchers">Watchers:</string>
+    <string name="forks">Forks:</string>
+    <string name="tags">Tags:</string>
+    <string name="open_issues">Open issues:</string>
+    <string name="sha">Sha:</string>
+    <string name="repositories">Repositories:</string>
+
 </resources>

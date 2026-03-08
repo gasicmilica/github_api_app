@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.github_api_app.Constants
+import com.example.github_api_app.R
 import com.example.github_api_app.databinding.UserReposFragmentBinding
 import com.example.github_api_app.data.model.State
 import com.example.github_api_app.data.model.UserRepoUi
@@ -82,7 +83,7 @@ class UserReposFragment : Fragment() {
                         }
                         is State.Success -> {
                             binding.noDataView.root.isVisible = state.data.isEmpty()
-                            binding.noDataView.tvNoContent.text = "No repos found for this user"
+                            binding.noDataView.tvNoContent.text = getString(R.string.no_repos_found)
                             binding.rvRepos.isVisible = state.data.isNotEmpty()
                             reposAdapter.setItems(state.data)
                             binding.loader.isVisible = false
