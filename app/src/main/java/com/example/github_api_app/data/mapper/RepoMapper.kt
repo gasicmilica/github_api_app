@@ -2,6 +2,8 @@ package com.example.github_api_app.data.mapper
 
 import com.example.github_api_app.data.model.RepoDetailsResponse
 import com.example.github_api_app.data.model.RepoDetailsUi
+import com.example.github_api_app.data.model.TagResponse
+import com.example.github_api_app.data.model.TagUi
 import com.example.github_api_app.data.model.UserRepoResponse
 import com.example.github_api_app.data.model.UserRepoUi
 
@@ -17,5 +19,12 @@ fun RepoDetailsResponse.toRepoDetailsUi(): RepoDetailsUi {
         name = this.name,
         watchersCount = this.watchersCount,
         forksCount = this.forksCount
+    )
+}
+
+fun TagResponse.toTagUi(): TagUi {
+    return TagUi(
+        name = this.name,
+        sha = this.commit.sha
     )
 }

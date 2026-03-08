@@ -3,9 +3,11 @@ package com.example.github_api_app.view_model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.github_api_app.data.mapper.toRepoDetailsUi
+import com.example.github_api_app.data.mapper.toTagUi
 import com.example.github_api_app.data.mapper.toUserUi
 import com.example.github_api_app.data.model.RepoDetailsUi
 import com.example.github_api_app.data.model.State
+import com.example.github_api_app.data.model.TagUi
 import com.example.github_api_app.data.model.UserUi
 import com.example.github_api_app.data.repository.GithubRepoRepository
 import com.example.github_api_app.data.repository.UserRepository
@@ -49,5 +51,19 @@ class RepoDetailsViewModel(
         }
     }
 
+    private val _tagsState = MutableStateFlow<State<List<TagUi>>>(State.Loading)
+    val tagsState: StateFlow<State<List<TagUi>>> = _tagsState.asStateFlow()
+
+    fun loadRepoTags(userName: String, repoName: String) {
+        viewModelScope.launch {
+            _tagsState.value = State.Loading
+            val result = githubRepoRepository.getRepoTags(userName, repoName)
+            _tagsState.value = when (result) {
+                is State.Success -> State.Success(result.data.map { it.toTagUi() })
+                is State.Error -> result
+                is State.Loading -> State.Loading
+            }
+        }
+    }
 
 }

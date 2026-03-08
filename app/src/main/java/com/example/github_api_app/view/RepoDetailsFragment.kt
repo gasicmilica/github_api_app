@@ -11,11 +11,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.github_api_app.Constants
 import com.example.github_api_app.R
 import com.example.github_api_app.data.model.State
 import com.example.github_api_app.databinding.RepoDetailsFragmentBinding
+import com.example.github_api_app.view.adapter.TagsAdapter
 import com.example.github_api_app.view_model.RepoDetailsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -27,6 +29,8 @@ class RepoDetailsFragment : Fragment() {
 
     private val repoDetailsViewModel: RepoDetailsViewModel by viewModel()
     private val args: RepoDetailsFragmentArgs by navArgs()
+    private lateinit var tagsAdapter: TagsAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +42,11 @@ class RepoDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        tagsAdapter = TagsAdapter()
+        binding.rvTags.adapter = tagsAdapter
+        binding.rvTags.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -87,8 +96,30 @@ class RepoDetailsFragment : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                repoDetailsViewModel.tagsState.collect { state ->
+                    when(state) {
+                        is State.Loading -> {
+                            binding.loader.isVisible = true
+                        }
+                        is State.Success -> {
+                            tagsAdapter.setItems(state.data)
+                            Log.d("PODACI", state.data.toString())
+                            binding.loader.isVisible = false
+                        }
+                        is State.Error -> {
+                            Log.d("Error", state.message)
+                            binding.loader.isVisible = false
+                        }
+                    }
+                }
+            }
+        }
+
         repoDetailsViewModel.loadUserInfo(Constants.TEST_USER_NAME)
         repoDetailsViewModel.loadRepoDetails(Constants.TEST_USER_NAME, args.repoName)
+        repoDetailsViewModel.loadRepoTags(Constants.TEST_USER_NAME, args.repoName)
     }
 
     override fun onDestroyView() {

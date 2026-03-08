@@ -103,6 +103,31 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_forks"
         tools:text="12" />
 
+    <TextView
+        android:id="@+id/tv_tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tags:"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_owner_name"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_tags"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        tools:listitem="@layout/tag_item"
+        tools:itemCount="14"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_tags"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
     <ProgressBar
         android:id="@+id/loader"
         android:layout_width="wrap_content"
