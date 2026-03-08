@@ -14,9 +14,10 @@ An Android application that displays public repositories for the user "Octocat".
 
 ## Screenshots
 
-<img src="screenshots/user-repo-light.png" width="220"> 
-<img src="screenshots/repo-details-light.png" width="220"> 
-<img src="screenshots/repo-detils-no-tags-light.png" width="220"> 
-<img src="screenshots/user-repo-dark.png" width="220"> 
-<img src="screenshots/repo-details-dark.png" width="220"> 
-
+<p align="center">
+    <img src="screenshots/user-repo-light.png" width="220" hspace="10"> 
+    <img src="screenshots/repo-details-light.png" width="220" hspace="10"> 
+    <img src="screenshots/repo-detils-no-tags-light.png" width="220" hspace="10"> 
+    <img src="screenshots/user-repo-dark.png" width="220" hspace="10"> 
+    <img src="screenshots/repo-details-dark.png" width="220" hspace="10"> 
+</p>
