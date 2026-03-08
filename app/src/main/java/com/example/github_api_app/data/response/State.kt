@@ -1,4 +1,4 @@
-package com.example.github_api_app.data.model
+package com.example.github_api_app.data.response
 
 sealed class State<out T> {
 

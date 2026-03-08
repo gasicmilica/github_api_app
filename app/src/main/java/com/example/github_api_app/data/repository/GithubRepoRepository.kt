@@ -1,10 +1,10 @@
 package com.example.github_api_app.data.repository
 
 import com.example.github_api_app.data.api.ApiService
-import com.example.github_api_app.data.model.RepoDetailsResponse
-import com.example.github_api_app.data.model.State
-import com.example.github_api_app.data.model.TagResponse
-import com.example.github_api_app.data.model.UserRepoResponse
+import com.example.github_api_app.data.response.RepoDetailsResponse
+import com.example.github_api_app.data.response.State
+import com.example.github_api_app.data.response.TagResponse
+import com.example.github_api_app.data.response.UserRepoResponse
 import com.example.github_api_app.utils.safeApiCall
 
 class GithubRepoRepository(private val apiService: ApiService) {

@@ -1,7 +1,7 @@
 package com.example.github_api_app.data.mapper
 
-import com.example.github_api_app.data.model.UserResponse
-import com.example.github_api_app.data.model.UserUi
+import com.example.github_api_app.data.response.UserResponse
+import com.example.github_api_app.model.UserUi
 
 fun UserResponse.toUserUi(): UserUi {
     return UserUi(

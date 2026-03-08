@@ -1,9 +1,9 @@
 package com.example.github_api_app.data.api
 
-import com.example.github_api_app.data.model.RepoDetailsResponse
-import com.example.github_api_app.data.model.TagResponse
-import com.example.github_api_app.data.model.UserRepoResponse
-import com.example.github_api_app.data.model.UserResponse
+import com.example.github_api_app.data.response.RepoDetailsResponse
+import com.example.github_api_app.data.response.TagResponse
+import com.example.github_api_app.data.response.UserRepoResponse
+import com.example.github_api_app.data.response.UserResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

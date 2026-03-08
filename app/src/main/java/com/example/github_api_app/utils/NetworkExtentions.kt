@@ -1,7 +1,7 @@
 package com.example.github_api_app.utils
 
-import com.example.github_api_app.data.model.ErrorMessage
-import com.example.github_api_app.data.model.State
+import com.example.github_api_app.data.response.ErrorMessage
+import com.example.github_api_app.data.response.State
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import retrofit2.Response

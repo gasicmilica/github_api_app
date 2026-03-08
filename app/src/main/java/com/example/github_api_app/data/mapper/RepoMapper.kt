@@ -1,11 +1,11 @@
 package com.example.github_api_app.data.mapper
 
-import com.example.github_api_app.data.model.RepoDetailsResponse
-import com.example.github_api_app.data.model.RepoDetailsUi
-import com.example.github_api_app.data.model.TagResponse
-import com.example.github_api_app.data.model.TagUi
-import com.example.github_api_app.data.model.UserRepoResponse
-import com.example.github_api_app.data.model.UserRepoUi
+import com.example.github_api_app.data.response.RepoDetailsResponse
+import com.example.github_api_app.model.RepoDetailsUi
+import com.example.github_api_app.data.response.TagResponse
+import com.example.github_api_app.data.response.UserRepoResponse
+import com.example.github_api_app.model.TagUi
+import com.example.github_api_app.model.UserRepoUi
 
 fun UserRepoResponse.toUserRepoUi(): UserRepoUi {
     return UserRepoUi(

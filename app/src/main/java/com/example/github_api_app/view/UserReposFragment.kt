@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.github_api_app.Constants
 import com.example.github_api_app.R
 import com.example.github_api_app.databinding.UserReposFragmentBinding
-import com.example.github_api_app.data.model.State
-import com.example.github_api_app.data.model.UserRepoUi
+import com.example.github_api_app.data.response.State
+import com.example.github_api_app.model.UserRepoUi
 import com.example.github_api_app.view.adapter.ReposAdapter
 import com.example.github_api_app.view_model.UserReposViewModel
 import kotlinx.coroutines.launch

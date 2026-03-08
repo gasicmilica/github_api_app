@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.github_api_app.Constants
 import com.example.github_api_app.R
-import com.example.github_api_app.data.model.State
+import com.example.github_api_app.data.response.State
 import com.example.github_api_app.databinding.RepoDetailsFragmentBinding
 import com.example.github_api_app.view.adapter.TagsAdapter
 import com.example.github_api_app.view_model.RepoDetailsViewModel

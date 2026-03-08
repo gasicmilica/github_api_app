@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.github_api_app.data.mapper.toRepoDetailsUi
 import com.example.github_api_app.data.mapper.toTagUi
 import com.example.github_api_app.data.mapper.toUserUi
-import com.example.github_api_app.data.model.RepoDetailsUi
-import com.example.github_api_app.data.model.State
-import com.example.github_api_app.data.model.TagUi
-import com.example.github_api_app.data.model.UserUi
+import com.example.github_api_app.model.RepoDetailsUi
+import com.example.github_api_app.data.response.State
 import com.example.github_api_app.data.repository.GithubRepoRepository
 import com.example.github_api_app.data.repository.UserRepository
+import com.example.github_api_app.model.TagUi
+import com.example.github_api_app.model.UserUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

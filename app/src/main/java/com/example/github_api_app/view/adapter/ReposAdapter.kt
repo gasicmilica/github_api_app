@@ -3,8 +3,8 @@ package com.example.github_api_app.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.github_api_app.data.model.UserRepoUi
 import com.example.github_api_app.databinding.RepoItemBinding
+import com.example.github_api_app.model.UserRepoUi
 
 class ReposAdapter(private val listener: RepoItemListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

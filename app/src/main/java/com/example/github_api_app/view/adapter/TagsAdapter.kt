@@ -3,8 +3,8 @@ package com.example.github_api_app.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.github_api_app.data.model.TagUi
 import com.example.github_api_app.databinding.TagItemBinding
+import com.example.github_api_app.model.TagUi
 
 class TagsAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

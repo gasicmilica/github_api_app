@@ -1,4 +1,4 @@
-package com.example.github_api_app.data.model
+package com.example.github_api_app.data.response
 
 data class TagResponse (
     val name: String,
@@ -6,10 +6,5 @@ data class TagResponse (
 )
 
 data class Commit (
-    val sha: String
-)
-
-data class TagUi (
-    val name: String,
     val sha: String
 )
