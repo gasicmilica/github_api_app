@@ -43,7 +43,6 @@ class UserReposFragment : Fragment() {
 
         reposAdapter = ReposAdapter(object: ReposAdapter.RepoItemListener {
             override fun onItemClicked(repo: UserRepoUi) {
-                Log.d("CLICK", "Repo item clicked " + repo.repoName)
                 findNavController().navigate(
                     UserReposFragmentDirections.actionUserReposFragmentToRepoDetailsFragment(repo.repoName)
                 )
@@ -82,6 +81,9 @@ class UserReposFragment : Fragment() {
                             binding.loader.isVisible = true
                         }
                         is State.Success -> {
+                            binding.noDataView.root.isVisible = state.data.isEmpty()
+                            binding.noDataView.tvNoContent.text = "No repos found for this user"
+                            binding.rvRepos.isVisible = state.data.isNotEmpty()
                             reposAdapter.setItems(state.data)
                             binding.loader.isVisible = false
                         }

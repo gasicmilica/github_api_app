@@ -127,6 +127,19 @@
         app:layout_constraintTop_toBottomOf="@id/tv_tags"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <include
+        android:id="@+id/no_data_view"
+        layout="@layout/no_data_view"
+        android:visibility="visible"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="24dp"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_tags"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 
     <ProgressBar
         android:id="@+id/loader"

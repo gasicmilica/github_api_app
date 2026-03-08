@@ -105,6 +105,9 @@ class RepoDetailsFragment : Fragment() {
             when(state) {
                 is State.Loading -> {}
                 is State.Success -> {
+                    binding.noDataView.root.isVisible = state.data.isEmpty()
+                    binding.noDataView.tvNoContent.text = "No tags found for this user"
+                    binding.rvTags.isVisible = state.data.isNotEmpty()
                     tagsAdapter.setItems(state.data)
                 }
                 is State.Error -> {
