@@ -50,76 +50,68 @@ class RepoDetailsFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                repoDetailsViewModel.userInfoState.collect { state ->
-                    when(state) {
-                        is State.Loading -> {
-                            binding.loader.isVisible = true
-                        }
-                        is State.Success -> {
-                            binding.tvOwnerName.text = state.data.name
-                            Glide.with(binding.root)
-                                .load(state.data.avatarUrl)
-                                .error(R.drawable.icon_arrow_forward)
-                                .circleCrop()
-                                .into(binding.ivOwnerAvatar)
-                            binding.loader.isVisible = false
-                        }
-                        is State.Error -> {
-                            Log.d("Error", state.message)
-                            binding.loader.isVisible = false
-                        }
+                launch { observeUserInfo() }
+                launch { observeRepoInfo() }
+                launch { observeTags() }
+
+                launch {
+                    repoDetailsViewModel.isAnythingLoading.collect { isLoading ->
+                        binding.loader.isVisible = isLoading
                     }
                 }
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                repoDetailsViewModel.state.collect { state ->
-                    when(state) {
-                        is State.Loading -> {
-                            binding.loader.isVisible = true
-                        }
-                        is State.Success -> {
-                            binding.tvRepoName.text = state.data.name
-                            binding.tvWatchersCount.text = state.data.watchersCount.toString()
-                            binding.tvForksCount.text = state.data.forksCount.toString()
+        repoDetailsViewModel.loadAllRepoData(Constants.TEST_USER_NAME, args.repoName)
+    }
 
-                            binding.loader.isVisible = false
-                        }
-                        is State.Error -> {
-                            Log.d("Error", state.message)
-                            binding.loader.isVisible = false
-                        }
-                    }
+    private suspend fun observeUserInfo() {
+        repoDetailsViewModel.userInfoState.collect { state ->
+            when(state) {
+                is State.Loading -> {}
+                is State.Success -> {
+                    binding.tvOwnerName.text = state.data.name
+                    Glide.with(this@RepoDetailsFragment)
+                        .load(state.data.avatarUrl)
+                        .error(R.drawable.icon_arrow_forward)
+                        .circleCrop()
+                        .into(binding.ivOwnerAvatar)
+                }
+                is State.Error -> {
+                    Log.d("Error", state.message)
                 }
             }
         }
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                repoDetailsViewModel.tagsState.collect { state ->
-                    when(state) {
-                        is State.Loading -> {
-                            binding.loader.isVisible = true
-                        }
-                        is State.Success -> {
-                            tagsAdapter.setItems(state.data)
-                            Log.d("PODACI", state.data.toString())
-                            binding.loader.isVisible = false
-                        }
-                        is State.Error -> {
-                            Log.d("Error", state.message)
-                            binding.loader.isVisible = false
-                        }
-                    }
+    private suspend fun observeRepoInfo() {
+        repoDetailsViewModel.state.collect { state ->
+            when(state) {
+                is State.Loading -> {}
+                is State.Success -> {
+                    binding.tvRepoName.text = state.data.name
+                    binding.tvWatchersCount.text = state.data.watchersCount.toString()
+                    binding.tvForksCount.text = state.data.forksCount.toString()
+                }
+                is State.Error -> {
+                    Log.d("Error", state.message)
                 }
             }
         }
+    }
 
-        repoDetailsViewModel.loadUserInfo(Constants.TEST_USER_NAME)
-        repoDetailsViewModel.loadRepoDetails(Constants.TEST_USER_NAME, args.repoName)
-        repoDetailsViewModel.loadRepoTags(Constants.TEST_USER_NAME, args.repoName)
+    private suspend fun observeTags() {
+        repoDetailsViewModel.tagsState.collect { state ->
+            when(state) {
+                is State.Loading -> {}
+                is State.Success -> {
+                    tagsAdapter.setItems(state.data)
+                }
+                is State.Error -> {
+                    Log.d("Error", state.message)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

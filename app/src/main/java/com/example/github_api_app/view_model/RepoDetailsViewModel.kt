@@ -12,8 +12,11 @@ import com.example.github_api_app.data.model.UserUi
 import com.example.github_api_app.data.repository.GithubRepoRepository
 import com.example.github_api_app.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RepoDetailsViewModel(
@@ -24,7 +27,7 @@ class RepoDetailsViewModel(
     private val _state = MutableStateFlow<State<RepoDetailsUi>>(State.Loading)
     val state: StateFlow<State<RepoDetailsUi>> = _state.asStateFlow()
 
-    fun loadRepoDetails(userName: String, repoName: String) {
+    private fun loadRepoDetails(userName: String, repoName: String) {
         viewModelScope.launch {
             _state.value = State.Loading
             val result = githubRepoRepository.getRepoDetails(userName, repoName)
@@ -39,7 +42,7 @@ class RepoDetailsViewModel(
     private val _userInfoState = MutableStateFlow<State<UserUi>>(State.Loading)
     val userInfoState: StateFlow<State<UserUi>> = _userInfoState.asStateFlow()
 
-    fun loadUserInfo(userName: String) {
+    private fun loadUserInfo(userName: String) {
         viewModelScope.launch {
             _userInfoState.value = State.Loading
             val result = userRepository.getUserInfo(userName)
@@ -54,7 +57,7 @@ class RepoDetailsViewModel(
     private val _tagsState = MutableStateFlow<State<List<TagUi>>>(State.Loading)
     val tagsState: StateFlow<State<List<TagUi>>> = _tagsState.asStateFlow()
 
-    fun loadRepoTags(userName: String, repoName: String) {
+    private fun loadRepoTags(userName: String, repoName: String) {
         viewModelScope.launch {
             _tagsState.value = State.Loading
             val result = githubRepoRepository.getRepoTags(userName, repoName)
@@ -64,6 +67,16 @@ class RepoDetailsViewModel(
                 is State.Loading -> State.Loading
             }
         }
+    }
+
+    val isAnythingLoading = combine(state, userInfoState, tagsState) { user, details, tags ->
+        user is State.Loading || details is State.Loading || tags is State.Loading
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
+    fun loadAllRepoData(userName: String, repoName: String) {
+        loadRepoDetails(userName, repoName)
+        loadUserInfo(userName)
+        loadRepoTags(userName, repoName)
     }
 
 }
