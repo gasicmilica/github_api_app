@@ -29,6 +29,7 @@ class ReposAdapter(private val listener: RepoItemListener) : RecyclerView.Adapte
     inner class ViewHolder(val binding: RepoItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(repoItem: UserRepoUi) = with(binding) {
+            root.setOnClickListener { listener.onItemClicked(repoItem) }
             tvRepoName.text = repoItem.repoName
             tvOpenIssuesCount.text = repoItem.openIssueCount.toString()
         }

@@ -8,7 +8,21 @@
     <fragment
         android:id="@+id/userReposFragment"
         android:name="com.example.github_api_app.view.UserReposFragment"
-        android:label="Profile"
-        tools:layout="@layout/user_repos_fragment" />
+        android:label="UserRepos"
+        tools:layout="@layout/user_repos_fragment" >
+        <action
+            android:id="@+id/action_userReposFragment_to_repoDetailsFragment"
+            app:destination="@id/repoDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/repoDetailsFragment"
+        android:name="com.example.github_api_app.view.RepoDetailsFragment"
+        android:label="RepoDetails"
+        tools:layout="@layout/repo_details_fragment" >
+        <argument
+            android:name="repoName"
+            app:argType="string"/>
+    </fragment>
 
 </navigation>

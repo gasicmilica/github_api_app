@@ -1,5 +1,6 @@
 package com.example.github_api_app.data.api
 
+import com.example.github_api_app.data.model.RepoDetailsResponse
 import com.example.github_api_app.data.model.UserRepoResponse
 import com.example.github_api_app.data.model.UserResponse
 import retrofit2.Response
@@ -13,5 +14,11 @@ interface ApiService {
 
     @GET("users/{user_name}/repos")
     suspend fun getUserRepos(@Path("user_name") userName: String): Response<List<UserRepoResponse>>
+
+    @GET("repos/{user_name}/{repo} ")
+    suspend fun getRepoDetails(
+        @Path("user_name") userName: String,
+        @Path("repo") repo: String
+    ): Response<RepoDetailsResponse>
 
 }

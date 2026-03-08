@@ -10,59 +10,49 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.github_api_app.Constants
-import com.example.github_api_app.databinding.UserReposFragmentBinding
+import com.example.github_api_app.R
 import com.example.github_api_app.data.model.State
-import com.example.github_api_app.data.model.UserRepoUi
-import com.example.github_api_app.view.adapter.ReposAdapter
-import com.example.github_api_app.view_model.UserReposViewModel
+import com.example.github_api_app.databinding.RepoDetailsFragmentBinding
+import com.example.github_api_app.view_model.RepoDetailsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserReposFragment : Fragment() {
+class RepoDetailsFragment : Fragment() {
 
-    private var _userReposFragmentBinding: UserReposFragmentBinding? = null
-    private val binding get() = _userReposFragmentBinding!!
+    private var _repoDetailsFragmentBinding: RepoDetailsFragmentBinding? = null
+    private val binding get() = _repoDetailsFragmentBinding!!
 
-    private val userReposViewModel: UserReposViewModel by viewModel()
-    private lateinit var reposAdapter: ReposAdapter
-
+    private val repoDetailsViewModel: RepoDetailsViewModel by viewModel()
+    private val args: RepoDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _userReposFragmentBinding = UserReposFragmentBinding.inflate(inflater, container, false)
+        _repoDetailsFragmentBinding = RepoDetailsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        reposAdapter = ReposAdapter(object: ReposAdapter.RepoItemListener {
-            override fun onItemClicked(repo: UserRepoUi) {
-                Log.d("CLICK", "Repo item clicked " + repo.repoName)
-                findNavController().navigate(
-                    UserReposFragmentDirections.actionUserReposFragmentToRepoDetailsFragment(repo.repoName)
-                )
-            }
-        })
-
-        binding.rvRepos.adapter = reposAdapter
-        binding.rvRepos.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userReposViewModel.userState.collect { state ->
+                repoDetailsViewModel.userInfoState.collect { state ->
                     when(state) {
                         is State.Loading -> {
                             binding.loader.isVisible = true
                         }
                         is State.Success -> {
-                            binding.tvUserName.text = state.data.name
+                            binding.tvOwnerName.text = state.data.name
+                            Glide.with(binding.root)
+                                .load(state.data.avatarUrl)
+                                .error(R.drawable.icon_arrow_forward)
+                                .circleCrop()
+                                .into(binding.ivOwnerAvatar)
                             binding.loader.isVisible = false
                         }
                         is State.Error -> {
@@ -76,13 +66,16 @@ class UserReposFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                userReposViewModel.userReposState.collect { state ->
+                repoDetailsViewModel.state.collect { state ->
                     when(state) {
                         is State.Loading -> {
                             binding.loader.isVisible = true
                         }
                         is State.Success -> {
-                            reposAdapter.setItems(state.data)
+                            binding.tvRepoName.text = state.data.name
+                            binding.tvWatchersCount.text = state.data.watchersCount.toString()
+                            binding.tvForksCount.text = state.data.forksCount.toString()
+
                             binding.loader.isVisible = false
                         }
                         is State.Error -> {
@@ -94,13 +87,13 @@ class UserReposFragment : Fragment() {
             }
         }
 
-        userReposViewModel.loadUserInfo(Constants.TEST_USER_NAME)
-        userReposViewModel.loadUserRepos(Constants.TEST_USER_NAME)
+        repoDetailsViewModel.loadUserInfo(Constants.TEST_USER_NAME)
+        repoDetailsViewModel.loadRepoDetails(Constants.TEST_USER_NAME, args.repoName)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _userReposFragmentBinding = null
+        _repoDetailsFragmentBinding = null
     }
 
 }
